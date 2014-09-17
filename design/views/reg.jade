@@ -1,0 +1,28 @@
+extends head
+
+block content
+  body
+    .container
+      form.form-signin(role='form', method="post")
+        // h2.form-signin-heading 请输入邮箱和密码
+        label 用户名:
+        input.form-control(type='text', id='userName', placeholder='请输入用户名', required='', autofocus='')
+        label 邮箱：
+        input.form-control(type='email', id='email', placeholder='Email address', required='')
+        label 密码：        
+        input.form-control(type='password', id='password', placeholder='Password', required='')
+        label 确定密码：
+        input.form-control(type='password', id='repassword', placeholder='再输入一遍密码', required='')
+        label.checkbox
+          input(type='checkbox', value='remember-me')
+          |  同意使用协议
+        button.btn.btn-lg.btn-primary.btn-block(type='submit', onclick='function_reg()') 注册
+  script(type='text/javascript').
+    function function_reg(){
+      console.log('functionreg() is run');
+    }
+    // /container
+    //
+      Bootstrap core JavaScript
+      ==================================================
+    // Placed at the end of the document so the pages load faster
