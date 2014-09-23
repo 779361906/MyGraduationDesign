@@ -4,11 +4,23 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var session    = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var settings = require('./settings');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+//connect to mongodb
+mongoose.connect('mongodb://localhost/'+settings.db, function(err){
+    if(!err){
+        console.log('connected to mongodb with mongoose!');
+    }else{
+        throw err;
+    }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +33,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    secret: settings.cookie_secret,
+    store: new MongoStore({
+      db : settings.db,
+    }),
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+  }));
 
 app.use('/', routes);
 app.use('/users', users);
